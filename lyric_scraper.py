@@ -1,11 +1,8 @@
-from requests import get
 from bs4 import BeautifulSoup as BS
+from requests import get
 
 
-### ADD YOUR WORD HERE SURROUNDED BY QUOTES LIKE search_word = "YOU WORD HERE"
-search_word = 'bleak'
-####
-
+search_word = input('Enter a word for inspiration\n>\t')
 
 
 def synonyms(word):
@@ -20,11 +17,6 @@ def synonyms(word):
         line = element.strip()
         if line and index not in [2,4]:
             lines.append(line)
-
-    # for index, line in enumerate(lines):
-    #     if word not in line:
-    #         if len(line) > 2:
-    #             print(line)
 
     words = [word]
 
@@ -51,13 +43,17 @@ def rhyme_scraper(word):
     return words
 
 
-
 words, first_word = synonyms(search_word)
+
 with open(f'{first_word.title()}.txt', 'a') as file:
     file.write(f'\t\t{first_word.upper()}\n\n')
     for i in words:
         print(i)
         file.write(f'{i}\n')
-        for rhyme in rhyme_scraper(i):
-            print(f'\t{rhyme}\n')
-            file.write(f'\t{rhyme}\n')
+        rhymes = rhyme_scraper(i)
+        if rhymes:
+            print('\tRhymes With:')
+            file.write('\tRhymes With:\n')
+        for rhyme in rhymes:
+            print(f'\t\t{rhyme}')
+            file.write(f'\t\t{rhyme}\n')
